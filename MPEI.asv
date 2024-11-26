@@ -1,0 +1,42 @@
+% Read the data from the CSV file
+M = readcell('injury_data.csv');
+
+% substituir 1s e 0s por alto e baixo
+ultima_coluna = M(2:end, end);
+
+for i = 1:length(ultima_coluna)
+    if isequal(ultima_coluna{i}, 1)
+        ultima_coluna{i} = 'alto';
+    elseif isequal(ultima_coluna{i}, 0)
+        ultima_coluna{i} = 'baixo';
+    end
+end
+
+M(2:end, end) = ultima_coluna;
+
+caracteristicas = categorical(M(1, 2:end-1));
+
+TREINO = cell2mat(M(2:end, 2:end-1)); 
+TREINO(:, 1) = round(TREINO(:, 1), 2); 
+TREINO(:, 2) = round(TREINO(:, 2));
+
+classes = categorical(M(2:end, end)); 
+nomes_classes = unique(classes);
+
+atletas_alto_risco = sum(classes == nomes_classes(1));           
+atletas_baixo = sum(classes == nomes_classes(2));                  
+total_atletas = length(classes);
+
+
+% P(C1)
+p_C1 = emails_OK/total_emails;
+fprintf("\nP(OK) = %f\n", p_C1);
+    
+% P(C2)
+p_C2 = emails_SPAM/total_emails;
+fprintf("P(SPAM) = %f\n", p_C2);
+
+
+
+
+
