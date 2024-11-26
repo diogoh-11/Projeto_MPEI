@@ -42,34 +42,23 @@ fprintf("\nP(C2) = %f\n", p_C2);
 % = P(classe|“caracteristicas_i”)*p(“caracteristicas_i”)/p(classe)
 %---------------C1------------------
 
-linhas_C1 = classes == C1;
-TREINO_C1 = TREINO(linhas_C1, :);
-
-%casos favoráveis e possiveis
-contagem = sum(TREINO_C1);
-total = size(TREINO_C1, 1);
-
-% calcular quociente
-prob_caracteristica_dado_C1 = contagem/total;
-
-disp('Matriz de P(Caracteristica|C1):');
+prob_caracteristica_dado_C1 = probCaractDadoClasse(TREINO,classes,C1);
 disp(prob_caracteristica_dado_C1);
 
 %---------------C2------------------
 
-linhas_C2 = classes == C2;
-TREINO_C2 = TREINO(linhas_C2, :);
-
-%casos favoráveis e possiveis
-contagem = sum(TREINO_C2);
-total = size(TREINO_C2, 1);
-
-% calcular quociente
-prob_caracteristica_dado_C2 = contagem/total;
-
-disp('Matriz de P(Caracteristica|C2):');
+prob_caracteristica_dado_C2 = probCaractDadoClasse(TREINO,classes,C2);
 disp(prob_caracteristica_dado_C2);
 
+
+%% -------Tentativa de Testes--------
+
+novos_jogadores = [
+    24, 70, 175, 1, 0.5, 5;
+    32, 80, 185, 0, 0.6, 2;
+    28, 88, 176, 1, 0.3, 4;
+    19, 85, 180, 1, 0.4, 6
+];
 
 
 
