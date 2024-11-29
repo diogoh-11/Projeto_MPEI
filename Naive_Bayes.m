@@ -105,9 +105,3 @@ disp(prob_caracteristica_dado_C2);
     
 % p(A|B) = p(B|A)/P(B) * P(A)
 % p(A=170|C1) = p(C1|A = 170)/P(C1) * P(A = 170)
-
-
-
-
-
-
