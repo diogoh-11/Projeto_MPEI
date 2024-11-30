@@ -40,7 +40,7 @@ clear M; clear ultima_coluna;
 %% Realizar divisão dos dados do ficherio para treino e teste
 
 permutacao = randperm(size(X,1));
-percentagem = 80;                          % 80% dos dados são utilizados para treino
+percentagem = 90;       % 90% dos dados são utilizados para treino
 num_linhas_treino = percentagem/100 * size(X, 1);
 
 TREINO = X(permutacao(1:num_linhas_treino),:);
@@ -101,23 +101,17 @@ for n = 1:size(TESTE,1)
     % Decidir a classe com maior probabilidade
     if p1 > p2 
         fprintf("Teste %d %s\n",n,C1);
-        resultadosMeus(n) = C1;
+        resultadosMeus(n) = 'ALTO';
     elseif p1 < p2
         fprintf("Teste %d %s\n",n,C2);
-        resultadosMeus(n) = C2;
+        resultadosMeus(n) = 'BAIXO';
     else
         fprintf("Teste %s Nem Sei\n",n);
         resultadosMeus(n) = 'Nem Sei';
     end
 end
 
-
-%% Determinar precisão, Recall, F1 do classificador de Bayes
-% Verificar se existem exemplos suficientes de cada classe no conjunto de teste
-if sum(classes_TESTE == C1) == 0 || sum(classes_TESTE == C2) == 0
-    disp('Aviso: uma das classes não está presente no conjunto de teste!');
-end
-
+% Determinar precisão, Recall, F1 do classificador de Bayes
 % Inicializar contadores para TP, FP, TN, FN
 TP = 0;
 FP = 0;
@@ -125,14 +119,14 @@ TN = 0;
 FN = 0;
 
 for j = 1:length(resultadosMeus)
-    if resultadosMeus(j) == C1 && classes_TESTE(j) == C1
-        TP = TP + 1;  % True Positive
-    elseif resultadosMeus(j) == C1 && classes_TESTE(j) == C2
-        FP = FP + 1;  % False Postive
-    elseif resultadosMeus(j) == C2 && classes_TESTE(j) == C1
-        FN = FN + 1;  % False Negative
-    elseif resultadosMeus(j) == C2 && classes_TESTE(j) == C2
-        TN = TN + 1;  % True Negative
+    if resultadosMeus(j) == 'BAIXO' && classes_teste(j) == 'BAIXO'
+        TN = TN + 1;  % True Positive
+    elseif resultadosMeus(j) == 'BAIXO' && classes_teste(j) == 'OK'
+        FN = FN + 1;  % False Positive
+    elseif resultadosMeus(j) == 'OK' && classes_teste(j) == 'OK'
+        TP = TP + 1;  % True Negative
+    elseif resultadosMeus(j) == 'OK' && classes_teste(j) == 'BAIXO'
+        FP = FP + 1;  % False Negative
     end
 end
 
