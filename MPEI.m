@@ -19,11 +19,11 @@ M(2:end, end) = ultima_coluna;
 caracteristicas = categorical(M(1, 2:end-1));
 
 % Matriz dos valores associados a cada característica
-X = cell2mat(M(2:end, 2:end-1)); 
+X = cell2mat(M(2:end, 1:end-1)); 
 % Arredondar peso com duas casas decimais
-X(:, 1) = round(X(:, 1), 2);
+X(:, 2) = round(X(:, 2), 2);
 % Arredondar altura às unidades
-X(:, 2) = round(X(:, 2)); 
+X(:, 3) = round(X(:, 3)); 
 
 % Vetor coluna com as classes dos atletas
 classes = categorical(M(2:end, end)); 
@@ -106,6 +106,44 @@ disp(prob_caracteristica_dado_C2);
 % p(A|B) = p(B|A)/P(B) * P(A)
 % p(A=170|C1) = p(C1|A = 170)/P(C1) * P(A = 170)
 
+%% Implementação Bloom Filter
+n=8000;
+m = 500;
+BF = initialize_BF(n);
+% k_otimo = n * ln(2) / m
+
+K = round(n * log(2) / m);
+fprintf("K ótimo: %d\n", K);
+
+for i=1:length(X)
+    if classes(i) == C1                 % Adicionar ao bloom filter atletas de risco para testar
+        atleta = X(i, :);
+        BF = add_to_BF(atleta, BF, K, n);
+    end
+end
+
+stem(BF);
+
+count = 0;
+falsos_positivos = 0;
+for i=1:length(X)
+    if classes(i) == C2                         % procurar se atletas de baixo estao no BF, N deviam. Podemos ter falsos positicos
+        atleta_teste = X(i, :);
+        in_filter = in_BF(BF, atleta_teste, K, n);
+        count = count + 1;
+
+        %fprintf("Atleta %d: ", count)
+
+        if in_filter == 1
+            %fprintf("Atleta pertence ao BF\n")
+            falsos_positivos = falsos_positivos + 1;
+        else
+            %fprintf("Atleta NÃO pertence ao BF\n")
+        end
+    end
+end
+
+fprintf("Falsos positivos: %d\n", falsos_positivos);
 
 
 
