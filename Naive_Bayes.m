@@ -19,11 +19,11 @@ M(2:end, end) = ultima_coluna;
 caracteristicas = categorical(M(1, 2:end-1));
 
 % Matriz dos valores associados a cada característica
-X = cell2mat(M(2:end, 2:end-1)); 
+X = cell2mat(M(2:end, 1:end-1)); 
 % Arredondar peso com duas casas decimais
-X(:, 1) = round(X(:, 1), 2);
+X(:, 2) = round(X(:, 2), 2);
 % Arredondar altura às unidades
-X(:, 2) = round(X(:, 2)); 
+X(:, 3) = round(X(:, 3)); 
 
 % Vetor coluna com as classes dos atletas
 classes = categorical(M(2:end, end)); 
@@ -99,14 +99,15 @@ for n = 1:size(TESTE,1)
     p1 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C1,p_C1,TESTE(n,:));  % probabilidade de ter Lesão
     p2 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C2,p_C2,TESTE(n,:));  % probabilidade de não ter Lesão
     % Decidir a classe com maior probabilidade
+    fprintf("--Atleta Teste %d--\nClasse teórica: %s\n", n, classes_TESTE(n))
     if p1 > p2 
-        fprintf("Teste %d %s\n",n,C1);
+        fprintf("Classe obtida: %s\n\n", C1);
         resultadosMeus(n) = C1;
     elseif p1 < p2
-        fprintf("Teste %d %s\n",n,C2);
+        fprintf("Classe obtida: %s\n\n", C2);
         resultadosMeus(n) = C2;
     else
-        fprintf("Teste %s Nem Sei\n",n);
+        fprintf("Classe obtida: Nem sei\n\n");
         resultadosMeus(n) = 'Nem Sei';
     end
 end
@@ -142,6 +143,6 @@ Recall = TP / (TP + FN);
 F1 = 2 * (Precisao * Recall) / (Precisao + Recall);
 
 % Exibir os resultados
-fprintf('Precisão: %.2f\n', Precisao);
-fprintf('Recall: %.2f\n', Recall);
-fprintf('F1-score: %.2f\n', F1);
+fprintf('Precisão: %.2f%%\n', Precisao*100);
+fprintf('Recall: %.2f%%\n', Recall*100);
+fprintf('F1-score: %.2f%%\n', F1*100);

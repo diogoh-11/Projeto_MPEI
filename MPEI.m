@@ -107,7 +107,7 @@ disp(prob_caracteristica_dado_C2);
 % p(A=170|C1) = p(C1|A = 170)/P(C1) * P(A = 170)
 
 %% Implementação Bloom Filter
-n=8000;
+n=10000;
 m = 500;
 BF = initialize_BF(n);
 % k_otimo = n * ln(2) / m
