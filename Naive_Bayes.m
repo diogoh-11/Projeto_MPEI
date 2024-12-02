@@ -40,7 +40,7 @@ clear M; clear ultima_coluna;
 %% Realizar divisão dos dados do ficherio para treino e teste
 
 permutacao = randperm(size(X,1));
-percentagem = 95;                          % 80% dos dados são utilizados para treino
+percentagem = 97;                          % 80% dos dados são utilizados para treino
 num_linhas_treino = percentagem/100 * size(X, 1);
 
 TREINO = X(permutacao(1:num_linhas_treino),:);
