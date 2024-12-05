@@ -17,11 +17,12 @@ function prob_caracteristicas_dado_Cx = probCaractDadoClasse(TREINO, classes, Cx
     sigma_Cx = std(TREINO_Cx, 0, 1);
     
     %------------------Dar mais peso a caracteristicas especifica--------
-    % Mais peso para a caracteristica 
-    fator_peso = 2.5;  % Exemplo: multiplicar a média por 2 e dividir o desvio padrão por 2
+    % %Mais peso para a caracteristica 
+    % fator_peso4 = 1.8;  % Exemplo: multiplicar a média por 2 e dividir o desvio padrão por 2
+    % 
+    % mu_Cx(4) = mu_Cx(4) * fator_peso4;  % Multiplica a média da primeira característica
+    % sigma_Cx(4) = sigma_Cx(4) / fator_peso4;  % Divide o desvio padrão da primeira característica
     
-    mu_Cx(4) = mu_Cx(4) * fator_peso;  % Multiplica a média da primeira característica
-    sigma_Cx(4) = sigma_Cx(4) / fator_peso;  % Divide o desvio padrão da primeira característica
     
     % Garantir que o desvio padrão não seja zero (para evitar divisão por zero)
     sigma_Cx(sigma_Cx == 0) = 1e-6;

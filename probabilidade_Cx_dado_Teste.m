@@ -12,6 +12,7 @@ function p = probabilidade_Cx_dado_Teste(prob_caracteristicas_dado_Cx, p_classe,
         % Calcular a probabilidade da característica i dada a classe (usando a fórmula normal)
         prob = (1 / (sigma * sqrt(2 * pi))) * exp(-0.5 * ((x(i) - mu) / sigma)^2);
         
+        
         % Multiplicar a probabilidade da classe com a probabilidade da característica
         p = p * prob;
     end
