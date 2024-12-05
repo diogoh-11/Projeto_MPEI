@@ -14,8 +14,8 @@ previous_injuries = atleta(4);      % 1 ou 0
 training_intensity = atleta(5);     % double [0,1]
 recovery_time = atleta(6);          % int
 
-hash_code = age * 31 + round(weight * 100) * 37 + height * 41 + previous_injuries * 43 + round(training_intensity * 1e7) * 47 + recovery_time * 53;
-hash_code = hash_code + k * 59;      
+hash_code = age * 599 + round(weight * 100) * 617 + height * 709 + previous_injuries * 739 + round(training_intensity * 1e7) * 773 + recovery_time * 797;
+hash_code = hash_code + k * 859;      
 
 % adaptar codigo às dimensões do BF
 hash_code = mod(hash_code, n) + 1;

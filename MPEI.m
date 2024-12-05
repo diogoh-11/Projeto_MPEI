@@ -152,7 +152,7 @@ fprintf('F1-score: %.2f%%\n', F1*100);
 
 
 %% Implementação Bloom Filter
-n=8000;
+n=15000;
 m = 500;
 BF = initialize_BF(n);
 % k_otimo = n * ln(2) / m

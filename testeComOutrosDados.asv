@@ -1,0 +1,140 @@
+%% Criação das matrizes e vetores de dados retirados do ficheiro
+
+M = readcell('athlete_injury_data.csv'); 
+
+% Vetor das características
+caracteristicas = categorical(M(1, 2:end-1));
+
+% Matriz dos valores associados a cada característica
+X = cell(M(2:end, 1:end-1));
+
+% Vetor coluna com as classes dos atletas
+classes = categorical(M(2:end, end)); 
+
+% Nomes das classes 
+nomes_classes = unique(classes);
+
+% C1 e C2 representam as classes (C1 = alto risco; C2 = Baixo risco)
+C_high = nomes_classes(1);  
+C_low = nomes_classes(2); 
+C_medium = nomes_classes(3); 
+
+%clear M;
+
+%% Realizar divisão dos dados do ficherio para treino e teste
+
+permutacao = randperm(size(X,1));
+percentagem = 70;       % 90% dos dados são utilizados para treino
+num_linhas_treino = percentagem/100 * size(X, 1);
+
+TREINO = X(permutacao(1:num_linhas_treino),:);
+TESTE = X(permutacao(num_linhas_treino+1:end),:);
+
+classes_TREINO = classes(1:num_linhas_treino);
+classes_TESTE = classes(num_linhas_treino+1:end);
+
+atletas_C_high = sum(classes_TREINO == C_high);    % Número de atletas de C1         
+atletas_C_low = sum(classes_TREINO == C_low);    % Número de atletas de C2           
+atletas_C_medium = sum(classes_TREINO == C_medium);    % Número de atletas de C2           
+total_atletas = length(classes_TREINO);    % Número total de atletas
+
+%% Calcular P(C_low), P(C_high) e P(C_medium)
+
+% P(C1)
+p_C_high = atletas_C_high/total_atletas;
+fprintf("P(C_high) = %f\n", p_C_high);
+
+% P(C2)
+p_C_medium = atletas_C_medium/total_atletas;
+fprintf("P(C_medium) = %f\n", p_C_medium);
+
+% P(C3)
+p_C_low = atletas_C_low/total_atletas;
+fprintf("P(C_low) = %f\n", p_C_low);
+
+%% Calculos probabilidades condicionadas
+
+% P(“caracteristicas_i”|classe) = 
+% = P(classe|“caracteristicas_i”)*p(“caracteristicas_i”)/p(classe)
+resultadosMeus = categorical(zeros(size(TESTE,1),1));
+
+for a = 1:length(TESTE)
+    P_C1_dado_caract = p_C_high;
+    P_C2_dado_caract = p_C_low;
+    ath = TESTE(a,:);
+
+    gender = atleta(1);
+    age = atleta(2);        
+    height = atleta(3);     
+    weight = atleta(4);     
+    sport = atleta(5);
+    Weekly_Training_Hours = atleta(6);
+    Training_Intensity = atleta(7);
+    Physical_Conditioning = atleta(8);
+    Nutrition_Score = atleta(9);
+    Previous_Injuries = atleta(10);
+
+    P_C1_dado_caract = P_C1_dado_caract * probCondicionadaColuna(age, TREINO(:,1), C_high,classes_TREINO) * probCondicionadaColuna(weight, TREINO(:,2), C_high,classes_TREINO) * probCondicionadaColuna(height, TREINO(:,3), C_high,classes_TREINO) * probsBinary(TREINO(:,4), previous_injuries,C_high, classes_TREINO) * probCondicionadaColuna(training_intensity, TREINO(:, 5), C_high, classes_TREINO) * probCondicionadaColuna(recovery_time, TREINO(:,6), C_high,classes_TREINO);
+    P_C2_dado_caract = P_C2_dado_caract * probCondicionadaColuna(age, TREINO(:,1), C_low,classes_TREINO) * probCondicionadaColuna(weight, TREINO(:,2), C_low,classes_TREINO) * probCondicionadaColuna(height, TREINO(:,3), C_low,classes_TREINO) * probsBinary(TREINO(:,4), previous_injuries,C_low, classes_TREINO) * probCondicionadaColuna(training_intensity, TREINO(:, 5), C_low, classes_TREINO) * probCondicionadaColuna(recovery_time, TREINO(:,6), C_low,classes_TREINO);
+    
+    fprintf("--Atleta Teste %d--\nClasse teórica: %s\n", a, classes_TESTE(a))
+    if P_C1_dado_caract > P_C2_dado_caract 
+        fprintf("Classe obtida: %s\n\n", C_high);
+        resultadosMeus(a) = C_high;
+    elseif P_C1_dado_caract < P_C2_dado_caract
+        fprintf("Classe obtida: %s\n\n", C_low);
+        resultadosMeus(a) = C_low;
+    else
+        fprintf("Classe obtida: Nem sei\n\n");
+        resultadosMeus(a) = 'Nem Sei';
+    end
+end
+
+% Determinar precisão, Recall, F1 do classificador de Bayes
+% Verificar se existem exemplos suficientes de cada classe no conjunto de teste
+if sum(classes_TESTE == C_high) == 0 || sum(classes_TESTE == C_low) == 0
+    disp('Aviso: uma das classes não está presente no conjunto de teste!');
+end
+
+% Inicializar contadores para TP, FP, TN, FN
+TP = 0;
+FP = 0;
+TN = 0;
+FN = 0;
+
+for j = 1:length(resultadosMeus)
+    if resultadosMeus(j) == C_high && classes_TESTE(j) == C_high
+        TP = TP + 1;  % True Positive
+    elseif resultadosMeus(j) == C_high && classes_TESTE(j) == C_low
+        FP = FP + 1;  % False Postive
+    elseif resultadosMeus(j) == C_low && classes_TESTE(j) == C_high
+        FN = FN + 1;  % False Negative
+    elseif resultadosMeus(j) == C_low && classes_TESTE(j) == C_low
+        TN = TN + 1;  % True Negative
+    end
+end
+
+
+fprintf("P(C1) = %f\n", p_C_high);
+fprintf("P(C2) = %f\n", p_C_low);
+
+
+fprintf("TP: %d\n", TP);
+fprintf("TN: %d\n", TN);
+fprintf("FP: %d\n", FP);
+fprintf("FN: %d\n", FN);
+
+% Calcular Precisão, Recall e F1-score
+Precisao = TP / (TP + FP);
+Recall = TP / (TP + FN);
+F1 = 2 * (Precisao * Recall) / (Precisao + Recall);
+
+% Exibir os resultados
+fprintf('Precisão: %.2f%%\n', Precisao*100);
+fprintf('Recall: %.2f%%\n', Recall*100);
+fprintf('F1-score: %.2f%%\n', F1*100);
+
+
+
+
+
