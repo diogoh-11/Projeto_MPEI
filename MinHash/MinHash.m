@@ -1,46 +1,47 @@
 %% MinHash
 
-% step 1 calcular os shingles
+% Calcular os shingles
 dic2 = readcell('athlete_injury_data.csv', 'Delimiter', ',');
 
-% Convert entire dataset to string format
+% Converter todos os dados para strings
 for i = 1:size(dic2, 1)
     for j = 1:size(dic2, 2) - 1
-        value = dic2{i, j}; % Get the cell value
+        value = dic2{i, j};                     % Acede ao valor da célula
 
         if isnumeric(value)
-            dic2{i, j} = num2str(value); % Convert numeric to string
+            dic2{i, j} = num2str(value);        % Converte de número para string
         elseif ischar(value) || isstring(value)
-            dic2{i, j} = char(value); % Ensure consistent string format
+            dic2{i, j} = char(value);           % Garante um formato consistente de string
         elseif isempty(value)
-            dic2{i, j} = ''; % Replace empty values with an empty string
+            dic2{i, j} = '';                    % Substitui valores vazios por uma string vazia
         else
-            dic2{i, j} = 'UNKNOWN'; % Handle unsupported data types
+            dic2{i, j} = 'UNKNOWN';             % Trata tipos de dados não suportados
         end
     end
 end
 
-% Initialize shingles storage
-shingles = cell(size(dic2, 1) - 1, 1); % Cell array for shingles
-k = 3; % Length of shingles
+% Inicializar armazenamento para os shingles
+shingles = cell(size(dic2, 1) - 1, 1); 
+k = 4;                                          % Comprimento dos shingles
 
-% Generate shingles for each row in dic2
-for i = 2:size(dic2, 1) % Skip the first row (assumed header)
-    % Concatenate all columns of the row into a single string
-    row_data = strjoin(dic2(i, :), ''); % Join columns with a space separator
-    shingle_list = {}; % Temporary storage for shingles
+% Gerar shingles para cada linha de dic2
+for i = 2:size(dic2, 1) % Ignorar a primeira linha (assumida como cabeçalho)
+    % Concatenar todas as colunas da linha em uma única string
+    row_data = strjoin(dic2(i, :), '');             % Junta as colunas com um separador de espaço
+    shingle_list = {};                              % Armazenamento temporário para os shingles
 
-    len = length(row_data); % Length of the concatenated row string
+    len = length(row_data);                         % Comprimento da string concatenada da linha
 
     if len >= k
-        for ind = 1:(len - k + 1) % Generate shingles
-            shingle = row_data(ind:ind + k - 1); % Extract substring of length k
-            shingle_list{end + 1} = shingle; % Append to the shingle list
+        for ind = 1:(len - k + 1)                   % Gerar shingles
+            shingle = row_data(ind:ind + k - 1);    % Extrai uma substring de comprimento k
+            shingle_list{end + 1} = shingle;        % Adiciona à lista de shingles
         end
     end
 
-    shingles{i-1} = shingle_list; % Store shingles in the output cell
+    shingles{i-1} = shingle_list;                   % Armazena os shingles na célula de saída
 end
+
 
 
 
@@ -93,7 +94,7 @@ imagesc(MA);
 
 
 %% Testar
-string = 'Female 20 150 80.2 Soccer 8.2 Low 5.1 7 2';
+string = 'Female 20 150 60.2 Soccer 8.2 Low 5.1 7 2';
 Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input
@@ -124,24 +125,24 @@ end
 % Ordenar as distâncias em ordem crescente
 [distancias_ordenadas, indices] = sort(distancias);
 
-% Selecionar os 3 filmes mais próximos
+% Selecionar os 3 jogadores mais próximos
 top10_indices = indices(1:10);
 top3_distancias = distancias_ordenadas(1:10);
 
 
 
-% Exibir os filmes mais próximos
+% Exibir os jogadores mais próximos
 fprintf('Os 3 atletas mais similares são:\n');
 for i = 1:10
     
     % Extrair a linha correspondente
-    linha_atleta = dic2(top10_indices(i) + 1, :); % Linha do atleta
+    linha_atleta = dic2(top10_indices(i) + 1, :);   % Linha do atleta
     
     % Converter cada elemento da linha em uma string
     linha_str = cellfun(@(x) num2str(x), linha_atleta, 'UniformOutput', false);
     
     % Concatenar os valores da linha em uma única string
-    atleta_nome = strjoin(linha_str, ' '); % Concatena com espaço entre valores
+    atleta_nome = strjoin(linha_str, ' ');          % Concatena com espaço entre valores
 
 
     fprintf('%s com distância %.4f\n', atleta_nome, top3_distancias(i));
