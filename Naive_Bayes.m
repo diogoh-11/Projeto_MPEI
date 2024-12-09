@@ -39,85 +39,89 @@ C2 = nomes_classes(2);
 clear M; clear ultima_coluna; 
 
 %% Realizar divisão dos dados do ficherio para treino e teste
-
-permutacao = randperm(size(X,1));
-percentagem = 95;                          % 80% dos dados são utilizados para treino
-num_linhas_treino = percentagem/100 * size(X, 1);
-
-TREINO = X(permutacao(1:num_linhas_treino),:);
-TESTE = X(permutacao(num_linhas_treino+1:end),:);
-
-classes_TREINO = classes(1:num_linhas_treino);
-classes_TESTE = classes(num_linhas_treino+1:end);
-
-atletas_C1 = sum(classes_TREINO == C1);    % Número de atletas de C1         
-atletas_C2 = sum(classes_TREINO == C2);    % Número de atletas de C2           
-total_atletas = length(classes_TREINO);    % Número total de atletas
-
-
-%% Calcular P(C1) e P(C2)
-
-% P(C1)
-p_C1 = atletas_C1/total_atletas;
-fprintf("P(C1) = %f\n", p_C1);
-
-% P(C2)
-p_C2 = atletas_C2/total_atletas;
-fprintf("P(C2) = %f\n", p_C2);
-
-%% Calculos probabilidades condicionadas
-% Abordagem Utlizando uma distribuição normal
-% P(x|C) = [ 1/raiz(2 * pi * o^2) ] * e ^ (x -u)^2
-
-% P(“caracteristicas_i”|classe) = 
-% = P(classe|“caracteristicas_i”)*p(“caracteristicas_i”)/p(classe)
-
-
-%---------------C1------------------
-
-% Calcular probabilidade condicionada de C1
-prob_caracteristica_dado_C1 = probCaractDadoClasse(TREINO,classes_TREINO,C1);
-
-disp('Matriz de P(Caracteristica|C1):');
-disp(prob_caracteristica_dado_C1);
-
-%---------------C2------------------
-
-% Calcular probabilidade condicionada de C2
-prob_caracteristica_dado_C2 = probCaractDadoClasse(TREINO,classes_TREINO,C2);
-
-disp('Matriz de P(Caracteristica|C2):');
-disp(prob_caracteristica_dado_C2);
-
+resultados = [];
+h = waitbar(0, 'Calculating');
+for m=1:1000
+    waitbar(n/1000, h, 'Calculating');
+    permutacao = randperm(size(X,1));
+    percentagem = 95;                          % 80% dos dados são utilizados para treino
+    num_linhas_treino = percentagem/100 * size(X, 1);
     
-% p(A|B) = p(B|A)/P(B) * P(A)
-% p(A=170|C1) = p(C1|A = 170)/P(C1) * P(A = 170)
-
-
-%% Classificação dos exemplos de teste
-
-resultadosMeus = categorical(zeros(size(TESTE,1),1));
-
-
-for n = 1:size(TESTE,1)
-    % Calcular probabilidades para cada classe
-    p1 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C1,p_C1,TESTE(n,:));  % probabilidade de ter Lesão
-    p2 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C2,p_C2,TESTE(n,:));  % probabilidade de não ter Lesão
-    % Decidir a classe com maior probabilidade
-    fprintf("--Atleta Teste %d--\nClasse teórica: %s\n", n, classes_TESTE(n))
+    TREINO = X(permutacao(1:num_linhas_treino),:);
+    TESTE = X(permutacao(num_linhas_treino+1:end),:);
     
-
-    if p1 > p2 
-        fprintf("Classe obtida: %s\n\n", C1);
-        resultadosMeus(n) = C1;
-    elseif p2 > p1 
-        fprintf("Classe obtida: %s\n\n", C2);
-        resultadosMeus(n) = C2;
-    else
-        fprintf("Classe obtida: Indefinido\n\n");
-        resultadosMeus(n) = 'Indefinido';
+    classes_TREINO = classes(1:num_linhas_treino);
+    classes_TESTE = classes(num_linhas_treino+1:end);
+    
+    atletas_C1 = sum(classes_TREINO == C1);    % Número de atletas de C1         
+    atletas_C2 = sum(classes_TREINO == C2);    % Número de atletas de C2           
+    total_atletas = length(classes_TREINO);    % Número total de atletas
+    
+    
+    %% Calcular P(C1) e P(C2)
+    
+    % P(C1)
+    p_C1 = atletas_C1/total_atletas;
+    fprintf("P(C1) = %f\n", p_C1);
+    
+    % P(C2)
+    p_C2 = atletas_C2/total_atletas;
+    fprintf("P(C2) = %f\n", p_C2);
+    
+    %% Calculos probabilidades condicionadas
+    % Abordagem Utlizando uma distribuição normal
+    % P(x|C) = [ 1/raiz(2 * pi * o^2) ] * e ^ (x -u)^2
+    
+    % P(“caracteristicas_i”|classe) = 
+    % = P(classe|“caracteristicas_i”)*p(“caracteristicas_i”)/p(classe)
+    
+    
+    %---------------C1------------------
+    
+    % Calcular probabilidade condicionada de C1
+    prob_caracteristica_dado_C1 = probCaractDadoClasse(TREINO,classes_TREINO,C1);
+    
+    disp('Matriz de P(Caracteristica|C1):');
+    disp(prob_caracteristica_dado_C1);
+    
+    %---------------C2------------------
+    
+    % Calcular probabilidade condicionada de C2
+    prob_caracteristica_dado_C2 = probCaractDadoClasse(TREINO,classes_TREINO,C2);
+    
+    disp('Matriz de P(Caracteristica|C2):');
+    disp(prob_caracteristica_dado_C2);
+    
+        
+    % p(A|B) = p(B|A)/P(B) * P(A)
+    % p(A=170|C1) = p(C1|A = 170)/P(C1) * P(A = 170)
+    
+    
+    %% Classificação dos exemplos de teste
+    
+    resultadosMeus = categorical(zeros(size(TESTE,1),1));
+    
+    
+    for n = 1:size(TESTE,1)
+        % Calcular probabilidades para cada classe
+        p1 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C1,p_C1,TESTE(n,:));  % probabilidade de ter Lesão
+        p2 = probabilidade_Cx_dado_Teste(prob_caracteristica_dado_C2,p_C2,TESTE(n,:));  % probabilidade de não ter Lesão
+        % Decidir a classe com maior probabilidade
+        %fprintf("--Atleta Teste %d--\nClasse teórica: %s\n", n, classes_TESTE(n))
+        
+    
+        if p1 > p2 
+            %fprintf("Classe obtida: %s\n\n", C1);
+            resultadosMeus(n) = C1;
+        elseif p2 > p1 
+            %fprintf("Classe obtida: %s\n\n", C2);
+            resultadosMeus(n) = C2;
+        else
+            %fprintf("Classe obtida: Indefinido\n\n");
+            resultadosMeus(n) = 'Indefinido';
+        end
     end
-end
+
 
 
 %% Determinar precisão, Recall, F1 do classificador de Bayes
@@ -149,7 +153,19 @@ Precisao = TP / (TP + FP);
 Recall = TP / (TP + FN);
 F1 = 2 * (Precisao * Recall) / (Precisao + Recall);
 
+resultados(m, 1) = Precisao;
+resultados(m, 2) = Recall;
+resultados(m, 3) = F1;
+
+end
+
+delete(h);
+Precisao_media = sum(resultados(:,1)/m);
+Recall_media = sum(resultados(:,2)/m);
+F1_media = sum(resultados(:,3)/m);
+
+
 % Exibir os resultados
-fprintf('Precisão: %.2f%%\n', Precisao*100);
-fprintf('Recall: %.2f%%\n', Recall*100);
-fprintf('F1-score: %.2f%%\n', F1*100);
+fprintf('Precisão: %.2f%%\n', Precisao_media*100);
+fprintf('Recall: %.2f%%\n', Recall_media*100);
+fprintf('F1-score: %.2f%%\n', F1_media*100);
