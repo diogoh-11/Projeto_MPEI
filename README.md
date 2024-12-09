@@ -1,4 +1,4 @@
-# Projeto: Análise Preditiva de Lesões em Jogadores de Futebol
+# Projeto: Análise Preditiva de Lesões em Desportistas
 
 ## Descrição do Projeto
 Este projeto utiliza técnicas de Ciência de Dados para analisar dados de jogadores e prever a probabilidade de ocorrência de lesões. Por meio de uma combinação de métodos como o classificador **Naive Bayes**, **Bloom Filter** e **Minhash**, conseguimos identificar jogadores com alta propensão a lesões, considerando fatores históricos e padrões de similaridade entre atributos de diferentes jogadores.
@@ -34,7 +34,8 @@ Este projeto utiliza técnicas de Ciência de Dados para analisar dados de jogad
   
 
 4. **Comparação por Similaridade com Minhash**:
-   
+   - O Minhash é utilizado para calcular a similaridade entre atletas de forma eficiente, baseando-se em conjuntos de shingles gerados a partir de suas características.
+   - Essa técnica permite identificar jogadores com padrões semelhantes de atributos ou histórico, auxiliando na análise de agrupamento ou identificação de perfis similares.
 
 5. **Conclusão e Resultados**:
   
