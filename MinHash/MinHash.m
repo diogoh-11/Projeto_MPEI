@@ -1,13 +1,13 @@
 %% MinHash
 
 % Calcular os shingles
-dic2 = readcell('athlete_injury_data.csv', 'Delimiter', ',');
-dados = cell(size(dic2,1)-1,size(dic2,2)-1);
+celulas = readcell('athlete_injury_data.csv', 'Delimiter', ',');
+dados = cell(size(celulas,1)-1,size(celulas,2)-1);
 
 % Converter todos os dados para strings
-for i = 1:size(dic2, 1)
-    for j = 1:(size(dic2, 2) - 1)
-        value = dic2{i, j};                     % Acede ao valor da célula
+for i = 1:size(celulas, 1)
+    for j = 1:(size(celulas, 2) - 1)
+        value = celulas{i, j};                     % Acede ao valor da célula
 
         if isnumeric(value)
             dados{i, j} = num2str(value);        % Converte de número para string
@@ -22,13 +22,13 @@ for i = 1:size(dic2, 1)
 end
 
 % Inicializar armazenamento para os shingles
-shingles = cell(size(dic2, 1) - 1, 1); 
-k = 4;                                          % Comprimento dos shingles
+shingles = cell(size(celulas, 1) - 1, 1); 
+k = 3;                                          % Comprimento dos shingles
 
-% Gerar shingles para cada linha de dic2
-for i = 2:size(dic2, 1) % Ignorar a primeira linha (assumida como cabeçalho)
+% Gerar shingles para cada linha de celulas
+for i = 2:size(celulas, 1) % Ignorar a primeira linha (assumida como cabeçalho)
     % Concatenar todas as colunas da linha em uma única string
-    row_data = strjoin(dados(i, :), '');             % Junta as colunas com um separador de espaço
+    row_data = strjoin(dados(i, :), ' ');             % Junta as colunas com um separador de espaço
     shingle_list = {};                              % Armazenamento temporário para os shingles
 
     len = length(row_data);                         % Comprimento da string concatenada da linha
@@ -46,14 +46,14 @@ end
 
 
 
-% shingles = cell(size(dic2, 1) - 1, 1); % Cell array for shingles
+% shingles = cell(size(celulas, 1) - 1, 1); % Cell array for shingles
 % k = 4; % Length of shingles
-% % Create shingles for each row in dic2
-% for i = 2:size(dic2, 1) % Start from row 2 to skip header (if present)
+% % Create shingles for each row in celulas
+% for i = 2:size(celulas, 1) % Start from row 2 to skip header (if present)
 %     shingle_list = {}; % Temporary storage for shingles
 % 
-%     for j = 1:size(dic2, 2) - 1 % Loop over each column
-%         data = dic2{i, j}; % Get the data from the cell array
+%     for j = 1:size(celulas, 2) - 1 % Loop over each column
+%         data = celulas{i, j}; % Get the data from the cell array
 % 
 %         % Convert all data to a string representation
 %         if isnumeric(data)
@@ -84,6 +84,7 @@ while ~isprime(p)
     p = p + 2;
 end
 
+rng(42); % Definir o estado do gerador de números aleatórios
 % Matriz de 200 por 3 funções de hash para ter os hash_codes de cada shingle
 R = randi(p,nhf,k);
 
@@ -95,7 +96,7 @@ imagesc(MA);
 
 
 %% Testar
-string = 'Male 25 180 98.2 Soccer 3.2 Moderate 3.3 3.3 2';
+string = 'Male 38 195 78.8 Basketball 7.2 Moderate 2.8 2.1 5';
 Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input
@@ -126,18 +127,18 @@ end
 % Ordenar as distâncias em ordem crescente
 [distancias_ordenadas, indices] = sort(distancias);
 
-% Selecionar os 3 jogadores mais próximos
-top10_indices = indices(1:10);
-top3_distancias = distancias_ordenadas(1:10);
+% Selecionar os 5 jogadores mais próximos
+top5_indices = indices(1:5);
+top5_distancias = distancias_ordenadas(1:5);
 
 
 
-% Exibir os jogadores mais próximos
-fprintf('Os 3 atletas mais similares são:\n');
-for i = 1:10
+%% Exibir os jogadores mais próximos
+fprintf('Os 5 atletas mais similares são:\n');
+for i = 1:5
     
     % Extrair a linha correspondente
-    linha_atleta = dic2(top10_indices(i) + 1, :);   % Linha do atleta
+    linha_atleta = celulas(top5_indices(i) + 1, :);   % Linha do atleta
     
     % Converter cada elemento da linha em uma string
     linha_str = cellfun(@(x) num2str(x), linha_atleta, 'UniformOutput', false);
@@ -146,7 +147,7 @@ for i = 1:10
     atleta_nome = strjoin(linha_str, ' ');          % Concatena com espaço entre valores
 
 
-    fprintf('%s com distância %.4f\n', atleta_nome, top3_distancias(i));
+    fprintf('%s com distância %.4f\n', atleta_nome, top5_distancias(i));
 end
 
 
