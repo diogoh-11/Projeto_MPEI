@@ -24,8 +24,8 @@
     
     resultados = [];
     h = waitbar(0, 'Calculating');
-    for n=1:20
-        waitbar(n/20, h, 'Calculating');
+    for n=1:50
+        waitbar(n/50, h, 'Calculating');
         permutacao = randperm(size(X,1));
         percentagem = 95;       % 90% dos dados são utilizados para treino
         num_linhas_treino = percentagem/100 * size(X, 1);

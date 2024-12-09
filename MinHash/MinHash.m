@@ -2,20 +2,21 @@
 
 % Calcular os shingles
 dic2 = readcell('athlete_injury_data.csv', 'Delimiter', ',');
+dados = cell(size(dic2,1)-1,size(dic2,2)-1);
 
 % Converter todos os dados para strings
 for i = 1:size(dic2, 1)
-    for j = 1:size(dic2, 2) - 1
+    for j = 1:(size(dic2, 2) - 1)
         value = dic2{i, j};                     % Acede ao valor da célula
 
         if isnumeric(value)
-            dic2{i, j} = num2str(value);        % Converte de número para string
+            dados{i, j} = num2str(value);        % Converte de número para string
         elseif ischar(value) || isstring(value)
-            dic2{i, j} = char(value);           % Garante um formato consistente de string
+            dados{i, j} = char(value);           % Garante um formato consistente de string
         elseif isempty(value)
-            dic2{i, j} = '';                    % Substitui valores vazios por uma string vazia
+            dados{i, j} = '';                    % Substitui valores vazios por uma string vazia
         else
-            dic2{i, j} = 'UNKNOWN';             % Trata tipos de dados não suportados
+            dados{i, j} = 'UNKNOWN';             % Trata tipos de dados não suportados
         end
     end
 end
@@ -27,7 +28,7 @@ k = 4;                                          % Comprimento dos shingles
 % Gerar shingles para cada linha de dic2
 for i = 2:size(dic2, 1) % Ignorar a primeira linha (assumida como cabeçalho)
     % Concatenar todas as colunas da linha em uma única string
-    row_data = strjoin(dic2(i, :), '');             % Junta as colunas com um separador de espaço
+    row_data = strjoin(dados(i, :), '');             % Junta as colunas com um separador de espaço
     shingle_list = {};                              % Armazenamento temporário para os shingles
 
     len = length(row_data);                         % Comprimento da string concatenada da linha
@@ -46,7 +47,7 @@ end
 
 
 % shingles = cell(size(dic2, 1) - 1, 1); % Cell array for shingles
-% k = 3; % Length of shingles
+% k = 4; % Length of shingles
 % % Create shingles for each row in dic2
 % for i = 2:size(dic2, 1) % Start from row 2 to skip header (if present)
 %     shingle_list = {}; % Temporary storage for shingles
@@ -94,7 +95,7 @@ imagesc(MA);
 
 
 %% Testar
-string = 'Female 20 150 60.2 Soccer 8.2 Low 5.1 7 2';
+string = 'Male 25 180 98.2 Soccer 3.2 Moderate 3.3 3.3 2';
 Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input
