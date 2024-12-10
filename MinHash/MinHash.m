@@ -96,7 +96,7 @@ imagesc(MA);
 
 
 %% Testar
-string = 'Male 38 195 78.8 Basketball 7.2 Moderate 2.8 2.1 5';
+string = 'Female 20 164 72.2 Basketball 7.2 Moderate 2.8 2.1 2';
 Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input

@@ -1,19 +1,19 @@
 import csv
 import random
 
-def generate_athlete_data_csv(filename="athlete_injury_data.csv", num_athletes=1000):
+def generate_athlete_data_csv(filename="athlete_injury_data3.csv", num_athletes=1000):
     # Define sport-specific characteristics
     athlete_profiles = {
-        "Soccer": {"Male": {"height": (165, 195), "weight": (60, 90)},
-                   "Female": {"height": (155, 185), "weight": (50, 75)}},
-        "Basketball": {"Male": {"height": (180, 215), "weight": (70, 110)},
-                       "Female": {"height": (170, 200), "weight": (55, 85)}},
-        "Running": {"Male": {"height": (160, 190), "weight": (50, 75)},
-                    "Female": {"height": (150, 180), "weight": (45, 65)}},
-        "Swimming": {"Male": {"height": (175, 205), "weight": (65, 100)},
-                     "Female": {"height": (165, 195), "weight": (55, 80)}},
-        "Gymnastics": {"Male": {"height": (160, 180), "weight": (55, 75)},
-                       "Female": {"height": (150, 170), "weight": (40, 55)}},
+        "Football": {"Men": {"height": (165, 195), "weight": (60, 90)},
+                   "Women": {"height": (155, 185), "weight": (50, 75)}},
+        "Basketball": {"Men": {"height": (180, 215), "weight": (70, 110)},
+                       "Women": {"height": (170, 200), "weight": (55, 85)}},
+        "Running": {"Men": {"height": (160, 190), "weight": (50, 75)},
+                    "Women": {"height": (150, 180), "weight": (45, 65)}},
+        "Swimming": {"Men": {"height": (175, 205), "weight": (65, 100)},
+                     "Women": {"height": (165, 195), "weight": (55, 80)}},
+        "Gymnastics": {"Men": {"height": (160, 180), "weight": (55, 75)},
+                       "Women": {"height": (150, 170), "weight": (40, 55)}},
     }
     
     # Define weights for each characteristic (these can be adjusted based on domain knowledge)
@@ -41,7 +41,7 @@ def generate_athlete_data_csv(filename="athlete_injury_data.csv", num_athletes=1
     
     for _ in range(num_athletes):
         # Randomly choose gender and sport
-        gender = random.choice(["Male", "Female"])
+        gender = random.choice(["Men", "Women"])
         sport = random.choice(list(athlete_profiles.keys()))
         
         # Get height and weight based on sport and gender
