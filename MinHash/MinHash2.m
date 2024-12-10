@@ -1,4 +1,3 @@
-function MinHash(input_athlete, N)
 %% MinHash
 
 % Calcular os shingles
@@ -91,17 +90,18 @@ R = randi(p,nhf,k);
 
 %% Matriz de assinaturas
 nhf = 200;
+fprintf(1,"Usando %d funções de dispersão\n", k);
 MA = calc_assinaturas_MinHashsh(shingles,nhf,R,p);
-%imagesc(MA);
+imagesc(MA);
 
 
 %% Testar
-athlete_string = strjoin(cellfun(@num2str, input_athlete, 'UniformOutput', false));
-Set2 = {criar_conjuntos_string(athlete_string,k)};
+string = 'Female 20 164 72.2 Basketball 7.2 Moderate 2.8 2.1 2';
+Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input
 MA2 = calc_assinaturas_MinHashsh(Set2,nhf,R,p);
-%imagesc(MA2)
+imagesc(MA2)
 
 %% Calcular as distancias
 
@@ -128,33 +128,29 @@ end
 [distancias_ordenadas, indices] = sort(distancias);
 
 % Selecionar os 5 jogadores mais próximos
-top_indices = indices(1:N);
-top_distancias = distancias_ordenadas(1:N);
+top5_indices = indices(1:5);
+top5_distancias = distancias_ordenadas(1:5);
 
 
 
 %% Exibir os jogadores mais próximos
-
-display_string = sprintf('---Usando %d funções de dispersão---\nOs %d atletas mais similares são:\n', k, N);
-
-for i = 1:N
+fprintf('Os 5 atletas mais similares são:\n');
+for i = 1:5
     
     % Extrair a linha correspondente
-    linha_atleta = celulas(top_indices(i) + 1, :);   % Linha do atleta
+    linha_atleta = celulas(top5_indices(i) + 1, :);   % Linha do atleta
     
     % Converter cada elemento da linha em uma string
     linha_str = cellfun(@(x) num2str(x), linha_atleta, 'UniformOutput', false);
     
     % Concatenar os valores da linha em uma única string
     atleta_nome = strjoin(linha_str, ' ');          % Concatena com espaço entre valores
-    str2 = sprintf('%s com distância %.4f\n', atleta_nome, top_distancias(i));
-    atleta_nome = strcat(atleta_nome, str2);
-    display_string = strcat(display_string, atleta_nome);
 
+
+    fprintf('%s com distância %.4f\n', atleta_nome, top5_distancias(i));
 end
 
-msg = display_string;
-title = 'MinHash results';
-m = msgbox(msg, title);
 
-end
+
+
+

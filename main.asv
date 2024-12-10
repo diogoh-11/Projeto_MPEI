@@ -1,3 +1,8 @@
+addpath("./BloomFilter");
+addpath("./NaiveBayes");
+addpath("./MinHash");
+addpath("./data");
+
 %% Criação das matrizes e vetores de dados retirados do ficheiro
 
 M = readcell('athlete_injury_data.csv'); 
@@ -207,7 +212,7 @@ end
 title = 'Similar athletes';
 prompt = {'  Would you like to get a list on ''n'' athletes with similar profiles as the input athlete?', '  Value of n: '};
 dims = [1 100];
-defaultInput = {'y/n', 'n'};
+defaultInput = {'y/n', 'N'};
 answer = (inputdlg(prompt, title, dims, defaultInput))';
 
 if isempty(answer)
@@ -217,6 +222,18 @@ end
 
 if strcmpi(answer{1}, 'y') == 1 || strcmpi(answer{1}, 'yes') == 1
     % Chamar método minHash e dar output aos resultados num msgBox
+    try 
+        N = str2double(answer{2})
+        if isnan(N) || N <= 0
+            fprintf("Invalid n input!\n");
+            return;
+        end
+        fprintf("OLA");
+        MinHash(input_athlete, N)
+    catch 
+        fprintf("Invalid olan input!\n");
+        return;
+    end
 else
     msg = 'Programm ended. Thank you for using us!';
     title = 'END';

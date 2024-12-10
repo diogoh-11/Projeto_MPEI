@@ -19,7 +19,7 @@ function MH = calc_assinaturas_MinHashsh(Set,k,R,p)
             hash_codes = zeros(1,length(conjunto));
             % aplicar função de hash a todos os elementos do conjunto
             for elem = 1:length(conjunto)
-                hash_codes(elem) = hash_function(conjunto{elem},hf,R,p);
+                hash_codes(elem) = hash_function_2(conjunto{elem},hf,R,p);
             end
             % obter minimo de hash codes gerados
             minhash = min(hash_codes);
