@@ -36,10 +36,10 @@ function athelete_class = Naive_Bayes(athlete, TREINO, classes)
     
 
     if P_C_high_dado_caract > P_C_low_dado_caract 
-        athelete_class = 'High';
+        athelete_class = 'high';
     elseif P_C_high_dado_caract < P_C_low_dado_caract
-        athelete_class = 'Low';
+        athelete_class = 'low';
     else
-        athelete_class = 'Inconclusive';
+        athelete_class = 'inconclusive';
     end
 end

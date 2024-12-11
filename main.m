@@ -65,7 +65,7 @@ prompt = { ...
 
 title = 'Athletes''s characteristics ';
 dims = [1 50];
-defaultInput = {'Men', '20', '75' '180', 'Running', '12', 'Moderate', '8', '6', '1'};
+defaultInput = {'Men', '20', '180', '75', 'Running', '12', 'Moderate', '8', '6', '1'};
 athlete = (inputdlg(prompt, title, dims, defaultInput))';
 
 if isempty(athlete)
@@ -168,7 +168,7 @@ end
 % previous_injuries
 try 
     previous_injuries = str2double(athlete{10});
-    if isnan(previous_injuries) || previous_injuries <= 0
+    if isnan(previous_injuries) || previous_injuries < 0
         fprintf("Invalid previous injuries input!\n");
         return;
     end
@@ -191,7 +191,12 @@ if athlete_in_BF == 0
     pause(3);
     close(m);
     athlete_class = Naive_Bayes(athlete, TREINO, classes);
-    msg = sprintf('Naive Bayes classifier result: %s\nAthlete added to bloom filter.', athlete_class);
+    if athlete_class == C_high
+        msg = sprintf('Naive Bayes classifier result: %s\nAthlete added to bloom filter.', athlete_class);
+    else
+        msg = sprintf('Naive Bayes classifier result: %s\n', athlete_class);
+    end
+
     title = 'Results';
     m = msgbox(msg, title, 'help');
     pause(3);
@@ -210,9 +215,9 @@ end
 %% Min Hash
 
 title = 'Similar athletes';
-prompt = {'  Would you like to get a list on ''n'' athletes with similar profiles as the input athlete?', '  Value of n: '};
-dims = [1 100];
-defaultInput = {'y', '5'};
+prompt = {'  Would you like to get a list of athletes with a similar profiles as the prompted athlete?', '  Number od athletes pretended: '};
+dims = [1 90];
+defaultInput = {'yes/no', 'number'};
 answer = (inputdlg(prompt, title, dims, defaultInput))';
 
 if isempty(answer)

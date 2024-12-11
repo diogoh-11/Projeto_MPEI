@@ -135,26 +135,34 @@ top_distancias = distancias_ordenadas(1:N);
 
 %% Exibir os jogadores mais próximos
 
-display_string = sprintf('---Usando %d funções de dispersão---\nOs %d atletas mais similares são:\n', k, N);
+% Converter cada elemento da linha em uma string
+linha_str = cellfun(@(x) num2str(x), input_athlete, 'UniformOutput', false);
+
+% Concatenar os valores da linha em uma única string
+atleta_nome = strjoin(linha_str, ', '); % Concatena com espaço entre valores
+
+display_string = sprintf('Based on Jaccard distances, the %d most similar athletes to the given athlete (%s) are:\n\n', N, atleta_nome);
 
 for i = 1:N
-    
     % Extrair a linha correspondente
-    linha_atleta = celulas(top_indices(i) + 1, :);   % Linha do atleta
-    
+    linha_atleta = celulas(top_indices(i) + 1, :); % Linha do atleta
+
     % Converter cada elemento da linha em uma string
     linha_str = cellfun(@(x) num2str(x), linha_atleta, 'UniformOutput', false);
-    
-    % Concatenar os valores da linha em uma única string
-    atleta_nome = strjoin(linha_str, ' ');          % Concatena com espaço entre valores
-    str2 = sprintf('%s com distância %.4f\n', atleta_nome, top_distancias(i));
-    atleta_nome = strcat(atleta_nome, str2);
-    display_string = strcat(display_string, atleta_nome);
 
+    % Concatenar os valores da linha em uma única string
+    atleta_nome = strjoin(linha_str, ', '); % Concatena com espaço entre valores
+
+    % Adicionar informações de distância em formato mais legível
+    atleta_info = sprintf('\n\n%d.%s: [%.4f]\n\n', i, atleta_nome, top_distancias(i));
+    display_string = strcat(display_string, atleta_info);
 end
 
+% Configurar e exibir msgbox
 msg = display_string;
-title = 'MinHash results';
-m = msgbox(msg, title);
+title = 'MinHash Results';
+msgbox(msg, title);
+
+
 
 end
