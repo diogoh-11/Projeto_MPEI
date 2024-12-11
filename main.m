@@ -199,7 +199,7 @@ if athlete_in_BF == 0
 
     title = 'Results';
     m = msgbox(msg, title, 'help');
-    pause(3);
+    pause(10);
     close(m);
     BF = add_to_BF(athlete, BF, K, n);
     save('BF.mat', 'BF', 'n', 'm', 'K');
@@ -215,7 +215,7 @@ end
 %% Min Hash
 
 title = 'Similar athletes';
-prompt = {'  Would you like to get a list of athletes with a similar profiles as the prompted athlete?', '  Number od athletes pretended: '};
+prompt = {'  Would you like to get a list of athletes with a similar profiles as the prompted athlete?', '  Number of athletes pretended: '};
 dims = [1 90];
 defaultInput = {'yes/no', 'number'};
 answer = (inputdlg(prompt, title, dims, defaultInput))';
