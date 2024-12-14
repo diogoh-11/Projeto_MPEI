@@ -161,7 +161,8 @@ end
 % Configurar e exibir msgbox
 msg = display_string;
 title = 'MinHash Results';
-msgbox(msg, title);
+m = msgbox(msg, title);
+uiwait(m);
 
 
 

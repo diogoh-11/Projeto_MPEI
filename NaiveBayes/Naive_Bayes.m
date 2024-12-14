@@ -34,7 +34,7 @@ function athelete_class = Naive_Bayes(athlete, TREINO, classes)
     P_C_high_dado_caract = p_C_high * probCondicionadaColuna(gender, TREINO(:,1),C_high, classes) * probsDistrNormal(age, TREINO(:,2), C_high, classes) * probsDistrNormal(height, TREINO(:,3), C_high, classes) * probsDistrNormal(weight, TREINO(:,4), C_high, classes) * probCondicionadaColuna(sport, TREINO(:,5), C_high, classes) * probsDistrNormal(Weekly_Training_Hours, TREINO(:,6), C_high, classes) * probCondicionadaColuna(Training_Intensity, TREINO(:,7), C_high, classes) * probsDistrNormal(Physical_Conditioning, TREINO(:,8), C_high, classes) * probsDistrNormal(Nutrition_Score, TREINO(:,9), C_high, classes) * probsDistrNormal(Previous_Injuries, TREINO(:,10), C_high, classes);
     P_C_low_dado_caract = p_C_low * probCondicionadaColuna(gender, TREINO(:,1),C_low, classes) * probsDistrNormal(age, TREINO(:,2), C_low, classes) * probsDistrNormal(height, TREINO(:,3), C_low, classes) * probsDistrNormal(weight, TREINO(:,4), C_low, classes) * probCondicionadaColuna(sport, TREINO(:,5), C_low, classes) * probsDistrNormal(Weekly_Training_Hours, TREINO(:,6), C_low, classes) * probCondicionadaColuna(Training_Intensity, TREINO(:,7), C_low, classes) * probsDistrNormal(Physical_Conditioning, TREINO(:,8), C_low, classes) * probsDistrNormal(Nutrition_Score, TREINO(:,9), C_low, classes) * probsDistrNormal(Previous_Injuries, TREINO(:,10), C_low, classes);
     
-
+    % atribuição das classes
     if P_C_high_dado_caract > P_C_low_dado_caract 
         athelete_class = 'high';
     elseif P_C_high_dado_caract < P_C_low_dado_caract

@@ -65,7 +65,7 @@ prompt = { ...
 
 title = 'Athletes''s characteristics ';
 dims = [1 50];
-defaultInput = {'Men', '20', '180', '75', 'Running', '12', 'Moderate', '8', '6', '1'};
+defaultInput = {'Men', '39', '187', '83', 'Football', '21', 'High', '10', '10', '0'};
 athlete = (inputdlg(prompt, title, dims, defaultInput))';
 
 if isempty(athlete)
@@ -73,7 +73,7 @@ if isempty(athlete)
     return;
 end
 
-% Verificar inputs e realizar conversôes
+% Verificar inputs e realizar conversões
 
 % Gender
 if strcmp(athlete{1}, 'Men') == 0 && strcmp(athlete{1}, 'Women') == 0
@@ -188,19 +188,18 @@ if athlete_in_BF == 0
     msg = 'Athlete NOT found! Proceding with Naive Bayes...';
     title = 'Failure';
     m = msgbox(msg, title, 'error');
-    pause(3);
-    close(m);
+    uiwait(m);
     athlete_class = Naive_Bayes(athlete, TREINO, classes);
     if athlete_class == C_high
-        msg = sprintf('Naive Bayes classifier result: %s\nAthlete added to bloom filter.', athlete_class);
+        msg = sprintf('Naive Bayes classifier result: %s.\nAthlete added to bloom filter.', athlete_class);
     else
         msg = sprintf('Naive Bayes classifier result: %s\n', athlete_class);
     end
 
     title = 'Results';
     m = msgbox(msg, title, 'help');
-    pause(10);
-    close(m);
+    uiwait(m);
+
     BF = add_to_BF(athlete, BF, K, n);
     save('BF.mat', 'BF', 'n', 'm', 'K');
 
@@ -208,8 +207,7 @@ else
     msg = 'Athlete found! Athlete will have HIGH probability of sustaining an injury.';
     title = 'Success';
     m = msgbox(msg, title, 'help');
-    pause(3);
-    close(m);
+    uiwait(m);
 end
 
 %% Min Hash
@@ -238,11 +236,9 @@ if strcmpi(answer{1}, 'y') == 1 || strcmpi(answer{1}, 'yes') == 1
         fprintf("Invalid ""N"" input or an error ocurred when calling MinHash!\n");
         return;
     end
-else
-    msg = 'Programm ended. Thank you for using us!';
-    title = 'END';
-    m = msgbox(msg, title, 'help');
-    pause(3);
-    close(m);
-    return;
 end
+
+msg = 'Programm ended. Thank you for using us!';
+title = 'END';
+m = msgbox(msg, title, 'help');
+uiwait(m);
