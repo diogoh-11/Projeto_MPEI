@@ -78,7 +78,7 @@ end
 %     shingles{i-1} = shingle_list; % Store shingles in the output cell
 % end
 %% Primo grande
-nhf = 200;
+nhf = 300;
 
 p = 123456789;
 while ~isprime(p)
@@ -86,11 +86,11 @@ while ~isprime(p)
 end
 
 rng(42); % Definir o estado do gerador de números aleatórios
-% Matriz de 200 por 3 funções de hash para ter os hash_codes de cada shingle
+% Matriz de 300 por 3 funções de hash para ter os hash_codes de cada shingle
 R = randi(p,nhf,k);
 
 %% Matriz de assinaturas
-nhf = 200;
+nhf = 300;
 MA = calc_assinaturas_MinHashsh(shingles,nhf,R,p);
 %imagesc(MA);
 

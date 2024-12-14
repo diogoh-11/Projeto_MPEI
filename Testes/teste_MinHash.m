@@ -77,7 +77,7 @@ end
 %     shingles{i-1} = shingle_list; % Store shingles in the output cell
 % end
 %% Primo grande
-nhf = 200;
+nhf = 300;
 
 p = 123456789;
 while ~isprime(p)
@@ -85,18 +85,18 @@ while ~isprime(p)
 end
 
 rng(42); % Definir o estado do gerador de números aleatórios
-% Matriz de 200 por 3 funções de hash para ter os hash_codes de cada shingle
+% Matriz de 300 por 3 funções de hash para ter os hash_codes de cada shingle
 R = randi(p,nhf,k);
 
 %% Matriz de assinaturas
-nhf = 200;
+nhf = 300;
 fprintf(1,"Usando %d funções de dispersão\n", k);
 MA = calc_assinaturas_MinHashsh(shingles,nhf,R,p);
 imagesc(MA);
 
 
 %% Testar
-string = 'Women 20 184 72.2 Basketball 7.2 Moderate 2.8 2.1 2';
+string = 'Men 24 184 82.4 Football 13.2 High 3.4 2.1 3';
 Set2 = {criar_conjuntos_string(string,k)};
 
 % Criar matriz de assinaturas para a frase de input
