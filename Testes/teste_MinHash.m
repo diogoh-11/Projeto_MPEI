@@ -2,7 +2,7 @@
 addpath("../BloomFilter");
 addpath("../NaiveBayes");
 addpath("../MinHash");
-addpath("../Data");
+addpath("../data");
 
 % Calcular os shingles
 celulas = readcell('athlete_injury_data.csv', 'Delimiter', ',');
