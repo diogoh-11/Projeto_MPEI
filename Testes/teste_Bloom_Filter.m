@@ -2,7 +2,7 @@
 addpath("../BloomFilter");
 addpath("../NaiveBayes");
 addpath("../MinHash");
-addpath("../data");
+addpath("../Data");
 
 M = readcell('athlete_injury_data.csv'); 
 
@@ -34,13 +34,13 @@ erro_teorico = (1 - (1 - 1/n)^(K*m))^K
 limite_inferior = 2^-K
 
 fprintf("K ótimo: %d\n", K);
-counter = 0;
+count = 0;
 
 for i=1:length(X)
     if classes(i) == C_high               % Adicionar ao bloom filter atletas de risco para testar
         atleta = X(i, :);
         BF = add_to_BF(atleta, BF, K, n);
-        counter = counter + 1;
+        count = count + 1;
     end
 end
 
@@ -64,7 +64,7 @@ for i=1:length(X)
 end
 
 fprintf("Falsos positivos: %d (em %d)\n", falsos_positivos, count);
-fprintf("Percentagem de falsos positivos: %.2f%%\n", falsos_positivos/counter * 100)
+fprintf("Percentagem de falsos positivos: %.2f%%\n", falsos_positivos/count * 100)
 
 count = 0;
 falsos_negativos = 0;
@@ -84,4 +84,30 @@ for i=1:length(X)
 end
 
 fprintf("Falsos negativos: %d (em %d)\n", falsos_negativos, count);
-fprintf("Percentagem de falsos negativos: %.2f%%\n", falsos_negativos/counter * 100)
+fprintf("Percentagem de falsos negativos: %.2f%%\n", falsos_negativos/count * 100)
+
+%% Teste Hash Function
+
+n = 100000;
+num_athletes = length(X);
+hash_codes_colisions = zeros(1, n);
+hash_codes = zeros(1, num_athletes);
+
+for a=1:num_athletes
+    hash_code = hash_function(X(a,:), 0, n);
+    hash_codes(a) = hash_code;
+    hash_codes_colisions(hash_code) = hash_codes_colisions(hash_code) + 1;
+end
+
+figure(1);
+stem(hash_codes_colisions)
+title("Colisões códigos de hash")
+xlabel("Código hash")
+ylabel("Nº colisões")
+
+
+figure(2);
+plot(1:num_athletes,hash_codes, '.')
+title("Códigos de hash")
+xlabel("Atleta")
+ylabel("Hash code")
