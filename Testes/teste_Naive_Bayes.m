@@ -2,7 +2,7 @@
 addpath("../BloomFilter");
 addpath("../NaiveBayes");
 addpath("../MinHash");
-addpath("../data");
+addpath("../Data");
 
 
 M = readcell('athlete_injury_data.csv'); 

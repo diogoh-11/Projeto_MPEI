@@ -1,7 +1,7 @@
 addpath("./BloomFilter");
 addpath("./NaiveBayes");
 addpath("./MinHash");
-addpath("./data");
+addpath("./Data");
 
 %% Criação das matrizes e vetores de dados retirados do ficheiro
 
