@@ -2,7 +2,7 @@
 addpath("../BloomFilter");
 addpath("../NaiveBayes");
 addpath("../MinHash");
-addpath("../data");
+addpath("../Data");
 
 
 M = readcell('athlete_injury_data.csv'); 
@@ -114,8 +114,6 @@ for n=1:50
             TN = TN + 1;  % True Negative
         end
     end
-
-
     
 %{
     fprintf("P(C1) = %f\n", p_C_high);
@@ -149,5 +147,4 @@ F1_media = sum(resultados(:,3)/n);
 fprintf('Precisão: %.2f%%\n', Precisao_media*100);
 fprintf('Recall: %.2f%%\n', Recall_media*100);
 fprintf('F1-score: %.2f%%\n', F1_media*100);
-
 
